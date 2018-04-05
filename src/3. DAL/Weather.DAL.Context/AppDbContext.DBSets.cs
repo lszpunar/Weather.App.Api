@@ -7,5 +7,6 @@ namespace Weather.DAL.Context
     {
         public DbSet<Device> Devices { get; set; }
         public DbSet<Measurement> Measurements { get; set; }
+
     }
 }
