@@ -9,5 +9,7 @@ namespace Weather.DAL.Models
         public int DeviceId { get; set; }
         public decimal Value { get; set; }
         public string Unite { get; set; }
+
+        public Device Device { get; set; }
     }
 }
