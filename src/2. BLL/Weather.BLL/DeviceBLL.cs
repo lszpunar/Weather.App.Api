@@ -32,8 +32,29 @@ namespace Weather.BLL
             return viewModel;
         }
 
-        public void Save()
+        public DeviceViewModel Get(string name)
         {
+            var mapper = _mapperConfiguration.CreateMapper();
+
+            var deviceEntity = _db.Devices.FirstOrDefault(device => device.Name == name);
+            DeviceViewModel viewModel = mapper.Map<DeviceViewModel>(deviceEntity);
+
+            return viewModel;
+        }
+
+        public IEnumerable<DeviceViewModel> GetAllDevices()
+        {
+            var mapper = _mapperConfiguration.CreateMapper();
+
+            var devices = _db.Devices.Select(device => mapper.Map<DeviceViewModel>(device)).ToList();
+
+            return devices;
+        }
+
+        public void Save(DeviceBindingModel deviceBinding)
+        {
+
+
             //var any = _db.Devices.First(device => device.Name )
         }
     }
