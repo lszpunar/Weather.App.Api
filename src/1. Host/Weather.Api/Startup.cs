@@ -57,9 +57,11 @@ namespace Weather.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+                app.UseBrowserLink();
             }
 
-            app.UseMvc();
+            //app.UseMvc();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -12,19 +12,11 @@ using Serilog;
 namespace Weather.Api
 {
     public class Program
-    {
-
-        public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
-           .SetBasePath(Directory.GetCurrentDirectory())
-           .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-           .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
-           .AddEnvironmentVariables()
-           .Build();
+    {       
 
         public static int Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(Configuration)
                 .Enrich
                 .FromLogContext()
                 .WriteTo
@@ -53,6 +45,22 @@ namespace Weather.Api
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+            .UseKestrel()
+                .UseIISIntegration()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseConfiguration(new ConfigurationBuilder()
+                    .AddEnvironmentVariables()
+                    .AddCommandLine(args)
+                    .Build())
+                .ConfigureAppConfiguration((builderContext, config) =>
+                {
+                    var env = builderContext.HostingEnvironment;
+                    config.AddJsonFile("appsettings.json", false, true)
+                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
+                    config.AddEnvironmentVariables();
+                    if (args != null)
+                        config.AddCommandLine(args);
+                })
             .UseSerilog()
                 .Build();
     }
