@@ -14,6 +14,8 @@ namespace Weather.BLL
         {
             CreateMap<Device, DeviceViewModel>();
             CreateMap<DeviceBindingModel, Device>();
+            CreateMap<Measurement, MeasurmentViewModel>();
+            CreateMap< MeasurmentBindingModel, Measurement>();
         }
     }
 }
