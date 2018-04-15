@@ -69,8 +69,9 @@ namespace Weather.BLL
                 
                 await _db.SaveChangesAsync();
             }
-            catch
+            catch(Exception ex)
             {
+                _log.Error(ex, "DeviceBLL: Error occure during saving.");
                 result = false;
             }
 
