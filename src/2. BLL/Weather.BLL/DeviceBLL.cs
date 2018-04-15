@@ -27,7 +27,7 @@ namespace Weather.BLL
             _log = log ?? throw new ArgumentNullException(nameof(log));
         }
 
-        public async Task<DeviceViewModel> GetAsync(int id)
+        public async Task<DeviceViewModel> GetAsync(Guid id)
         {
             var deviceEntity = await _db.Devices.FirstOrDefaultAsync(device => device.Id == id);
             DeviceViewModel viewModel = _mapper.Map<DeviceViewModel>(deviceEntity);

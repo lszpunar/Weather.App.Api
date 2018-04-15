@@ -1,9 +1,11 @@
-﻿namespace Weather.DAL.Models
+﻿using System;
+
+namespace Weather.DAL.Models
 {
-    public class Device
+    public class Device : IIdentifiable
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public Guid Id { get; set; }
     }
 }

@@ -8,7 +8,7 @@ using Serilog;
 using Weather.DAL.Context;
 using Weather.DAL.SQLiteContext;
 
-namespace Weather.Api.Installers
+namespace Weather.Api.IoC
 {
     public class HostModule : Module
     {

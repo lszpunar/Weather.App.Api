@@ -9,7 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.6.2" />
+    <PackageReference Include="Autofac" Version="4.7.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.0.0" />
     <PackageReference Include="AutofacSerilogIntegration" Version="2.0.0" />
     <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
@@ -28,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\3. DAL\Weather.DAL.Context\Weather.DAL.Context.csproj" />
+    <ProjectReference Include="..\..\3. DAL\Weather.DAL.Mongo\Weather.DAL.Mongo.csproj" />
     <ProjectReference Include="..\..\3. DAL\Weather.DAL.SQLiteContext\Weather.DAL.SQLiteContext.csproj" />
   </ItemGroup>
 

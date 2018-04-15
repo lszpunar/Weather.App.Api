@@ -8,4 +8,8 @@
     <Folder Include="BaseEntity\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Weather.DAL\Weather.DAL.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\3. DAL\Weather.DAL.Models\Weather.DAL.Models.csproj" />
+    <ProjectReference Include="..\src\3. DAL\Weather.DAL.Mongo\Weather.DAL.Mongo.csproj" />
+  </ItemGroup>
+
+</Project>

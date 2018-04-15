@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
-using Weather.DAL.Context;
+using Weather.App.Common.MVC.DShop.Common.Mvc;
+using Weather.DAL.Models;
+using Weather.DAL.Mongo;
 
 namespace Weather.Api
 {
@@ -24,22 +21,13 @@ namespace Weather.Api
         }
 
         public IConfiguration Configuration { get; }
+        public IContainer Container { get; private set; }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-            services
-                .AddDbContext<AppDbContext>
-                (option => option.UseSqlServer(Configuration["database:connection"]));
-
-            //// Adding Auto Mapper
-            //services.AddAutoMapper();
-
-            //services.AddSerilog(Configuration);
-            services.AddWebEncoders();
-
-
+            services.AddMvc().AddDefaultJsonOptions();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info
@@ -49,6 +37,24 @@ namespace Weather.Api
                     Description = "Description"
                 });
             });
+
+            var builder = new ContainerBuilder();
+            builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
+                .AsImplementedInterfaces();
+            builder.Populate(services);
+            //builder.AddRabbitMq();
+            builder.AddMongoDB();
+            builder.AddMongoDBRepository<Device>("Devices");
+
+            //builder.RegisterGeneric(typeof(GenericCommandHandler<>))
+            //    .As(typeof(ICommandHandler<>));
+            //builder.RegisterGeneric(typeof(GenericEventHandler<>))
+            //    .As(typeof(IEventHandler<>));
+
+
+            Container = builder.Build();
+
+            return new AutofacServiceProvider(Container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
