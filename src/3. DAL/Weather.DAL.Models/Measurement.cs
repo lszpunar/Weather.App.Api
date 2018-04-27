@@ -6,7 +6,7 @@ namespace Weather.DAL.Models
     {
         public int Id { get; set; }
         public DateTime DateTime { get; set; }
-        public int DeviceId { get; set; }
+        public Guid DeviceId { get; set; }
         public decimal Value { get; set; }
         public string Unite { get; set; }
 

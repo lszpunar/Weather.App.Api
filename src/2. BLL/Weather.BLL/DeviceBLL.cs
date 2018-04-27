@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using Weather.BLL.ApiModels;
 using Weather.BLL.ApiModels.In;
 using Weather.BLL.ApiModels.Out;
 using Weather.DAL.Context;
