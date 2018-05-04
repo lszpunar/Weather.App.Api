@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 using Weather.App.Common.MVC.DShop.Common.Mvc;
 using Weather.DAL.Models;
@@ -27,12 +29,13 @@ namespace Weather.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddDefaultJsonOptions();
+            services.AddWebEncoders();
+            services.AddMvc();//.AddDefaultJsonOptions();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info
                 {
-                    Title = "ADM API",
+                    Title = "Weather API",
                     Version = "v1",
                     Description = "Description"
                 });
@@ -58,8 +61,15 @@ namespace Weather.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            // Add Serilog to the logging pipeline
+            loggerFactory.AddSerilog();
+            loggerFactory.AddConsole();
+
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -67,17 +77,14 @@ namespace Weather.Api
                 app.UseBrowserLink();
             }
 
-            //app.UseMvc();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    "default",
-                    "{controller=Home}/{action=Index}/{id?}");
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
-            //app.Run(async (context) =>
-            //{
-            //    await context.Response.WriteAsync("Hello World!");
-            //});
+
 
             app.UseSwagger(c =>
             {
